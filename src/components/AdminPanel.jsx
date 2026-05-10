@@ -17,8 +17,14 @@ const EMPTY = {
   nameEn: '', nameBn: '',
   shortDescEn: '', shortDescBn: '',
   fullDescEn: '', fullDescBn: '',
-  image: '', // Store base64 string
-  stock: '', usdt: '', bdt: '',
+  image: '',
+  stock: '',
+  packages: {
+    '1 Month': { usdt: '', bdt: '' },
+    '3 Months': { usdt: '', bdt: '' },
+    '6 Months': { usdt: '', bdt: '' },
+    '1 Year': { usdt: '', bdt: '' },
+  }
 }
 
 export default function AdminPanel({ onClose, onProductAdded }) {
@@ -44,8 +50,7 @@ export default function AdminPanel({ onClose, onProductAdded }) {
       fullBn: 'Full Description (বাংলা)',
       photo: 'Product Photo (Max 2MB)',
       stock: 'Stock Quantity *',
-      usdt: 'Price in USDT *',
-      bdt: 'Price in BDT *',
+      packagesLabel: 'Pricing Packages (Fill at least one)',
       add: 'Add Product',
       adding: 'Adding...',
       successMsg: '✅ Product added successfully!',
@@ -66,8 +71,7 @@ export default function AdminPanel({ onClose, onProductAdded }) {
       fullBn: 'সম্পূর্ণ বিবরণ (বাংলা)',
       photo: 'পণ্যর ছবি (সর্বোচ্চ 2MB)',
       stock: 'স্টক পরিমাণ *',
-      usdt: 'মূল্য (USDT) *',
-      bdt: 'মূল্য (BDT) *',
+      packagesLabel: 'প্যাকেজ প্রাইসিং (কমপক্ষে একটি পূরণ করুন)',
       add: 'পণ্য যোগ করুন',
       adding: 'যোগ হচ্ছে...',
       successMsg: '✅ পণ্য সফলভাবে যোগ হয়েছে!',
@@ -106,6 +110,19 @@ export default function AdminPanel({ onClose, onProductAdded }) {
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
+  const setPackage = (duration, field, value) => {
+    setForm(f => ({
+      ...f,
+      packages: {
+        ...f.packages,
+        [duration]: {
+          ...f.packages[duration],
+          [field]: value
+        }
+      }
+    }))
+  }
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -126,12 +143,32 @@ export default function AdminPanel({ onClose, onProductAdded }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(''); setSuccess('')
-    if (!form.nameEn || !form.usdt || !form.bdt || !form.stock) {
-      setError('Please fill in all required (*) fields')
+
+    // Extract filled packages
+    const filledPackages = [];
+    Object.entries(form.packages).forEach(([duration, prices]) => {
+      if (prices.usdt && prices.bdt) {
+        filledPackages.push({ duration, usdt: Number(prices.usdt), bdt: Number(prices.bdt) });
+      }
+    });
+
+    if (!form.nameEn || !form.stock) {
+      setError('Please fill in product name and stock')
       return
     }
+
+    if (filledPackages.length === 0) {
+      setError('Please fill in both USDT and BDT for at least one package duration')
+      return
+    }
+
     setLoading(true)
     try {
+      const payload = {
+        ...form,
+        packages: filledPackages
+      }
+
       const token = localStorage.getItem('ots_token')
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products`, {
         method: 'POST',
@@ -139,7 +176,7 @@ export default function AdminPanel({ onClose, onProductAdded }) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       })
       const data = await res.json()
       if (!data.success) throw new Error(data.message)
@@ -316,22 +353,37 @@ export default function AdminPanel({ onClose, onProductAdded }) {
             </div>
 
             {/* Pricing */}
-            <div className="admin-section-label">Stock & Pricing</div>
-            <div className="admin-grid-3">
+            <div className="admin-section-label">{l.packagesLabel}</div>
+            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '12px', marginBottom: '24px' }}>
+              {['1 Month', '3 Months', '6 Months', '1 Year'].map(duration => (
+                <div key={duration} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', alignItems: 'center', marginBottom: '12px' }}>
+                  <div style={{ fontWeight: 'bold', color: '#475569' }}>{duration}</div>
+                  <input 
+                    type="number" 
+                    value={form.packages[duration].usdt} 
+                    onChange={e => setPackage(duration, 'usdt', e.target.value)}
+                    placeholder="USDT (e.g. 5)" 
+                    step="0.01" min="0" 
+                    style={{ padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px' }}
+                  />
+                  <input 
+                    type="number" 
+                    value={form.packages[duration].bdt} 
+                    onChange={e => setPackage(duration, 'bdt', e.target.value)}
+                    placeholder="BDT (e.g. 529)" 
+                    min="0" 
+                    style={{ padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px' }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="admin-section-label">Stock</div>
+            <div className="admin-grid-2">
               <div className="admin-field">
                 <label>{l.stock}</label>
                 <input type="number" value={form.stock} onChange={e => set('stock', e.target.value)}
                   placeholder="e.g. 50" min="0" required />
-              </div>
-              <div className="admin-field">
-                <label>{l.usdt}</label>
-                <input type="number" value={form.usdt} onChange={e => set('usdt', e.target.value)}
-                  placeholder="e.g. 5.00" step="0.01" min="0" required />
-              </div>
-              <div className="admin-field">
-                <label>{l.bdt}</label>
-                <input type="number" value={form.bdt} onChange={e => set('bdt', e.target.value)}
-                  placeholder="e.g. 529" min="0" required />
               </div>
             </div>
 

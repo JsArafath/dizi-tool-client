@@ -7,6 +7,13 @@ export default function ProductCard({ product }) {
   const { addToCart } = useCart()
   const { lang, t } = useLang()
 
+  // Package logic
+  const hasPackages = product.packages && product.packages.length > 0;
+  const [selectedPkgIndex, setSelectedPkgIndex] = useState(0);
+  
+  const currentUsdt = hasPackages ? product.packages[selectedPkgIndex].usdt : product.usdt;
+  const currentBdt = hasPackages ? product.packages[selectedPkgIndex].bdt : product.bdt;
+
   // Pick the right language for name/desc
   const name      = product.name[lang]
   const shortDesc = product.shortDesc[lang]
@@ -86,21 +93,40 @@ export default function ProductCard({ product }) {
       <div className="pricing-row">
         <div className="price-box">
           <div className="price-label">BINANCE</div>
-          <div className="price-value">${product.usdt.toFixed(2)}</div>
+          <div className="price-value">${Number(currentUsdt).toFixed(2)}</div>
           <div className="price-currency">USDT</div>
         </div>
         <div className="price-box">
           <div className="price-label">BKASH / NAGAD</div>
-          <div className="price-value">৳{product.bdt}</div>
+          <div className="price-value">৳{currentBdt}</div>
           <div className="price-currency">BDT</div>
         </div>
       </div>
+
+      {/* Package Selection */}
+      {hasPackages && (
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 'bold', color: '#64748b', marginBottom: '8px', textTransform: 'uppercase' }}>Select Duration</label>
+          <select 
+            value={selectedPkgIndex} 
+            onChange={e => setSelectedPkgIndex(Number(e.target.value))}
+            style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '14px', background: '#f8fafc', color: '#0f172a', fontWeight: '600' }}
+          >
+            {product.packages.map((pkg, idx) => (
+              <option key={idx} value={idx}>{pkg.duration}</option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {/* Add to cart */}
       <button
         className="add-to-cart-btn"
         id={`atc-${product.id}`}
-        onClick={() => addToCart(product)}
+        onClick={() => {
+          const itemToAdd = hasPackages ? { ...product, selectedPackage: product.packages[selectedPkgIndex] } : product;
+          addToCart(itemToAdd);
+        }}
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>

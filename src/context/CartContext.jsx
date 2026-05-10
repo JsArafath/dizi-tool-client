@@ -26,8 +26,14 @@ export function CartProvider({ children }) {
     setCart(prev => prev.filter(i => i.id !== id))
   }, [])
 
-  const totalUsdt = cart.reduce((s, i) => s + i.usdt, 0)
-  const totalBdt  = cart.reduce((s, i) => s + i.bdt, 0)
+  const totalUsdt = cart.reduce((s, i) => {
+    if (i.selectedPackage) return s + i.selectedPackage.usdt;
+    return s + i.usdt;
+  }, 0)
+  const totalBdt  = cart.reduce((s, i) => {
+    if (i.selectedPackage) return s + i.selectedPackage.bdt;
+    return s + i.bdt;
+  }, 0)
 
   return (
     <CartContext.Provider value={{ cart, addToCart, removeFromCart, totalUsdt, totalBdt, toast }}>

@@ -60,9 +60,14 @@ export default function CartDrawer({ isOpen, onClose }) {
                   <div className="cart-item-info">
                     <div className="cart-item-name">
                       {itemName.length > 50 ? itemName.slice(0, 50) + '…' : itemName}
+                      {item.selectedPackage && (
+                        <span style={{ display: 'block', fontSize: '11px', color: '#64748b', marginTop: '2px', fontWeight: 'bold' }}>
+                          [{item.selectedPackage.duration}]
+                        </span>
+                      )}
                     </div>
                     <div className="cart-item-price">
-                      ${item.usdt.toFixed(2)} USDT · ৳{item.bdt} BDT
+                      ${(item.selectedPackage ? item.selectedPackage.usdt : item.usdt).toFixed(2)} USDT · ৳{item.selectedPackage ? item.selectedPackage.bdt : item.bdt} BDT
                     </div>
                   </div>
                   <button
