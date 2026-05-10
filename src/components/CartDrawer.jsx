@@ -46,9 +46,17 @@ export default function CartDrawer({ isOpen, onClose }) {
                 const itemName = typeof item.name === 'object' ? (item.name[lang] || item.name.en) : item.name;
                 return (
                 <li className="cart-item" key={item.id}>
-                  <div className="cart-item-icon" style={{ background: item.iconBg }}>
-                    {item.icon}
-                  </div>
+                  {item.image ? (
+                    <img 
+                      src={item.image} 
+                      alt="cart item" 
+                      style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }} 
+                    />
+                  ) : (
+                    <div className="cart-item-icon" style={{ background: item.iconBg || '#eee' }}>
+                      {item.icon || '📦'}
+                    </div>
+                  )}
                   <div className="cart-item-info">
                     <div className="cart-item-name">
                       {itemName.length > 50 ? itemName.slice(0, 50) + '…' : itemName}

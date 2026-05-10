@@ -17,7 +17,7 @@ const EMPTY = {
   nameEn: '', nameBn: '',
   shortDescEn: '', shortDescBn: '',
   fullDescEn: '', fullDescBn: '',
-  icon: '📦', iconBg: '#e8f4ff',
+  image: '', // Store base64 string
   stock: '', usdt: '', bdt: '',
 }
 
@@ -42,8 +42,7 @@ export default function AdminPanel({ onClose, onProductAdded }) {
       shortBn: 'Short Description (বাংলা)',
       fullEn: 'Full Description (English)',
       fullBn: 'Full Description (বাংলা)',
-      icon: 'Icon Emoji',
-      iconBg: 'Icon Background',
+      photo: 'Product Photo (Max 2MB)',
       stock: 'Stock Quantity *',
       usdt: 'Price in USDT *',
       bdt: 'Price in BDT *',
@@ -65,8 +64,7 @@ export default function AdminPanel({ onClose, onProductAdded }) {
       shortBn: 'সংক্ষিপ্ত বিবরণ (বাংলা)',
       fullEn: 'সম্পূর্ণ বিবরণ (ইংরেজি)',
       fullBn: 'সম্পূর্ণ বিবরণ (বাংলা)',
-      icon: 'আইকন ইমোজি',
-      iconBg: 'আইকন ব্যাকগ্রাউন্ড',
+      photo: 'পণ্যর ছবি (সর্বোচ্চ 2MB)',
       stock: 'স্টক পরিমাণ *',
       usdt: 'মূল্য (USDT) *',
       bdt: 'মূল্য (BDT) *',
@@ -107,6 +105,23 @@ export default function AdminPanel({ onClose, onProductAdded }) {
   }
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Please select an image smaller than 2MB.");
+      e.target.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      set('image', reader.result);
+    };
+    reader.readAsDataURL(file);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -234,38 +249,24 @@ export default function AdminPanel({ onClose, onProductAdded }) {
         {/* Form Tab */}
         {activeTab === 'add' && (
           <form className="admin-form" onSubmit={handleSubmit} id="admin-add-form">
-            {/* Icon row */}
-            <div className="admin-section-label">Icon & Background</div>
-            <div className="admin-icon-row">
-              <div className="admin-field">
-                <label>{l.icon}</label>
-                <div className="icon-picker">
-                  {ICONS.map(ic => (
-                    <button
-                      key={ic} type="button"
-                      className={`icon-option${form.icon === ic ? ' selected' : ''}`}
-                      onClick={() => set('icon', ic)}
-                    >{ic}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="admin-field">
-                <label>{l.iconBg}</label>
-                <div className="bg-picker">
-                  {BG_COLORS.map(c => (
-                    <button
-                      key={c.value} type="button"
-                      className={`bg-option${form.iconBg === c.value ? ' selected' : ''}`}
-                      style={{ background: c.value }}
-                      onClick={() => set('iconBg', c.value)}
-                      title={c.label}
-                    />
-                  ))}
-                </div>
-                {/* Preview */}
-                <div className="icon-preview" style={{ background: form.iconBg }}>
-                  {form.icon}
-                </div>
+            {/* Image Upload */}
+            <div className="admin-section-label">Product Image</div>
+            <div className="admin-field" style={{ marginBottom: '20px' }}>
+              <label>{l.photo}</label>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginTop: '8px' }}>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  onChange={handleImageUpload}
+                  style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '8px', width: '100%', maxWidth: '300px' }}
+                />
+                {form.image && (
+                  <img 
+                    src={form.image} 
+                    alt="Preview" 
+                    style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #eee' }} 
+                  />
+                )}
               </div>
             </div>
 
@@ -351,7 +352,11 @@ export default function AdminPanel({ onClose, onProductAdded }) {
                 {products.map(p => (
                   <li key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', borderBottom: '1px solid #eee' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <span style={{ fontSize: '24px', background: p.iconBg, width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px' }}>{p.icon}</span>
+                      {p.image ? (
+                        <img src={p.image} alt="product" style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '8px' }} />
+                      ) : (
+                        <span style={{ fontSize: '24px', background: p.iconBg || '#eee', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px' }}>{p.icon || '📦'}</span>
+                      )}
                       <div style={{ fontSize: '14px', fontWeight: 'bold' }}>{p.name[lang] || p.name.en}</div>
                     </div>
                     <button 

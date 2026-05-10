@@ -16,9 +16,17 @@ export default function ProductCard({ product }) {
     <article className="product-card" data-id={product.id}>
       {/* Top row */}
       <div className="product-card-top">
-        <div className="product-icon" style={{ background: product.iconBg }}>
-          {product.icon}
-        </div>
+        {product.image ? (
+          <img 
+            src={product.image} 
+            alt={name} 
+            style={{ width: '48px', height: '48px', borderRadius: '12px', objectFit: 'cover', flexShrink: 0, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }} 
+          />
+        ) : (
+          <div className="product-icon" style={{ background: product.iconBg || '#f0f4f8' }}>
+            {product.icon || '📦'}
+          </div>
+        )}
         <div className="product-card-info">
           <h3 className="product-name">{name}</h3>
           <div className="product-badges">
