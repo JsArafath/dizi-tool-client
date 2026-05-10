@@ -6,6 +6,7 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import Products from './components/Products'
 import HowItWorks from './components/HowItWorks'
+import ReviewsSection from './components/ReviewsSection'
 import Footer from './components/Footer'
 import CartDrawer from './components/CartDrawer'
 import Toast from './components/Toast'
@@ -51,6 +52,7 @@ export default function App() {
           <main>
             <Hero />
             <Products extraProducts={newProducts} />
+            <ReviewsSection />
             <HowItWorks />
           </main>
           <Footer />

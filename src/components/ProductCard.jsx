@@ -82,9 +82,9 @@ export default function ProductCard({ product }) {
           <div className="price-currency">USDT</div>
         </div>
         <div className="price-box">
-          <div className="price-label">UPI / CARDS</div>
-          <div className="price-value">₹{product.inr}</div>
-          <div className="price-currency">INR</div>
+          <div className="price-label">BKASH / NAGAD</div>
+          <div className="price-value">৳{product.bdt}</div>
+          <div className="price-currency">BDT</div>
         </div>
       </div>
 

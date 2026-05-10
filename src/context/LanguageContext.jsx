@@ -24,7 +24,7 @@ export const translations = {
     payWith: 'Pay with',
     payWithBold1: 'Binance (USDT)',
     payWithOr: 'or',
-    payWithBold2: 'UPI / Cards (INR)',
+    payWithBold2: 'UPI / Cards (BDT)',
     payWithSuffix: 'via PayU',
     warranty: 'Warranty',
     refundPolicy: 'Refund Policy',
@@ -48,12 +48,19 @@ export const translations = {
     step3Title: 'Get Delivered',
     step3Desc: 'Receive your product within 60 minutes via email',
 
-    // Cart
+    // Cart & Checkout
     yourCart: 'Your Cart',
     cartEmpty: 'Your cart is empty',
     totalUsdt: 'Total (USDT)',
-    totalInr: 'Total (INR)',
+    totalInr: 'Total (BDT)',
     checkout: 'Checkout via Telegram',
+    checkoutNow: 'Checkout Now',
+    secureCheckout: 'Secure Checkout',
+    emailAddress: 'Email Address',
+    phoneNumber: 'Phone Number',
+    paymentMethod: 'Payment Method',
+    processing: 'Processing...',
+    payNow: 'Pay',
 
     // Footer
     footerTagline: 'Premium digital tools — 60 min delivery',
@@ -80,7 +87,7 @@ export const translations = {
     payWith: 'পেমেন্ট করুন',
     payWithBold1: 'বিনান্স (USDT)',
     payWithOr: 'অথবা',
-    payWithBold2: 'UPI / কার্ড (INR)',
+    payWithBold2: 'UPI / কার্ড (BDT)',
     payWithSuffix: 'PayU এর মাধ্যমে',
     warranty: 'ওয়ারেন্টি',
     refundPolicy: 'রিফান্ড পলিসি',
@@ -104,12 +111,19 @@ export const translations = {
     step3Title: 'ডেলিভারি পান',
     step3Desc: 'ইমেইলের মাধ্যমে ৬০ মিনিটের মধ্যে পণ্য পাবেন',
 
-    // Cart
+    // Cart & Checkout
     yourCart: 'আপনার কার্ট',
     cartEmpty: 'কার্ট খালি আছে',
     totalUsdt: 'মোট (USDT)',
-    totalInr: 'মোট (INR)',
+    totalInr: 'মোট (BDT)',
     checkout: 'টেলিগ্রামে চেকআউট করুন',
+    checkoutNow: 'চেকআউট করুন',
+    secureCheckout: 'নিরাপদ চেকআউট',
+    emailAddress: 'ইমেইল অ্যাড্রেস',
+    phoneNumber: 'ফোন নাম্বার',
+    paymentMethod: 'পেমেন্ট মাধ্যম',
+    processing: 'প্রসেসিং হচ্ছে...',
+    payNow: 'পেমেন্ট করুন',
 
     // Footer
     footerTagline: 'প্রিমিয়াম ডিজিটাল টুলস — ৬০ মিনিট ডেলিভারি',

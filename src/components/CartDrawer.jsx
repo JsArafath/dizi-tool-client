@@ -1,9 +1,17 @@
+import { useState } from 'react'
 import { useCart } from '../context/CartContext'
 import { useLang } from '../context/LanguageContext'
+import CheckoutModal from './CheckoutModal'
 
 export default function CartDrawer({ isOpen, onClose }) {
-  const { cart, removeFromCart, totalUsdt, totalInr } = useCart()
-  const { t } = useLang()
+  const { cart, removeFromCart, totalUsdt, totalBdt } = useCart()
+  const { t, lang } = useLang()
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false)
+
+  const handleCheckoutClick = (e) => {
+    e.preventDefault();
+    setIsCheckoutOpen(true);
+  }
 
   return (
     <>
@@ -34,17 +42,19 @@ export default function CartDrawer({ isOpen, onClose }) {
             </div>
           ) : (
             <ul className="cart-items" id="cart-items">
-              {cart.map(item => (
+              {cart.map(item => {
+                const itemName = typeof item.name === 'object' ? (item.name[lang] || item.name.en) : item.name;
+                return (
                 <li className="cart-item" key={item.id}>
                   <div className="cart-item-icon" style={{ background: item.iconBg }}>
                     {item.icon}
                   </div>
                   <div className="cart-item-info">
                     <div className="cart-item-name">
-                      {item.name.length > 50 ? item.name.slice(0, 50) + '…' : item.name}
+                      {itemName.length > 50 ? itemName.slice(0, 50) + '…' : itemName}
                     </div>
                     <div className="cart-item-price">
-                      ${item.usdt.toFixed(2)} USDT · ₹{item.inr} INR
+                      ${item.usdt.toFixed(2)} USDT · ৳{item.bdt} BDT
                     </div>
                   </div>
                   <button
@@ -57,7 +67,8 @@ export default function CartDrawer({ isOpen, onClose }) {
                     </svg>
                   </button>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           )}
         </div>
@@ -70,20 +81,20 @@ export default function CartDrawer({ isOpen, onClose }) {
             </div>
             <div className="cart-total-row">
               <span>{t.totalInr}</span>
-              <strong id="cart-total-inr">₹{totalInr}</strong>
+              <strong id="cart-total-inr">৳{totalBdt}</strong>
             </div>
-            <a
-              href="https://t.me/digzstore"
-              target="_blank"
-              rel="noreferrer"
+            <button
+              onClick={handleCheckoutClick}
               className="checkout-btn"
               id="checkout-btn"
             >
-              {t.checkout}
-            </a>
+              {t.checkoutNow || 'Checkout Now'}
+            </button>
           </div>
         )}
       </aside>
+      
+      <CheckoutModal isOpen={isCheckoutOpen} onClose={() => setIsCheckoutOpen(false)} />
     </>
   )
 }
