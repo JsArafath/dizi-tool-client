@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import ProductCard from './ProductCard'
 import { useLang } from '../context/LanguageContext'
 
-export default function Products({ extraProducts = [] }) {
+export default function Products({ extraProducts = [], isShopPage = false }) {
   const { t } = useLang()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -25,25 +25,65 @@ export default function Products({ extraProducts = [] }) {
     ...extraProducts.filter(ep => !products.find(p => p.id === ep.id))
   ]
 
+  const featured = all.slice(0, 10)
+  const bestSelling = all.slice(10, 20)
+
   return (
     <section className="products-section" id="products">
       <div className="container">
-        <div className="section-header">
-          <h2 className="section-title">{t.availableProducts}</h2>
-          <p className="section-sub">
-            {t.payWith} <strong>{t.payWithBold1}</strong> {t.payWithOr} <strong>{t.payWithBold2}</strong> {t.payWithSuffix}
-          </p>
+        
+        {/* Header (Featured or Shop) */}
+        <div className="section-header" style={{ textAlign: 'center', marginBottom: '30px', marginTop: isShopPage ? '40px' : '0' }}>
+          <h2 className="section-title" style={{ fontSize: '24px', color: '#333', fontWeight: '500', marginBottom: '10px' }}>
+            {isShopPage ? t.allProducts : t.featuredProducts}
+          </h2>
+          {!isShopPage && <p style={{ color: '#888', fontSize: '14px' }}>{t.featuredSubtitle}</p>}
         </div>
+
         {loading ? (
           <div className="products-loading">
-            <div className="spinner" />
+            <div className="spinner"></div>
           </div>
         ) : (
-          <div className="products-grid" id="products-grid">
-            {all.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <>
+            {/* Featured or Shop Grid */}
+            <div className="products-grid" id="products-grid">
+              {(isShopPage ? all : featured).map(product => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+
+            {/* Elements only shown on Home Page */}
+            {!isShopPage && (
+              <>
+                {/* SEE MORE Button */}
+                <div style={{ textAlign: 'center', marginTop: '30px', marginBottom: '40px' }}>
+                  <button style={{ background: '#8cc63f', color: 'white', border: 'none', padding: '10px 25px', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer', borderRadius: '2px' }}>
+                    {t.seeMore}
+                  </button>
+                </div>
+
+                {/* Diamond Divider */}
+                <div style={{ textAlign: 'center', color: '#8cc63f', fontSize: '14px', letterSpacing: '8px', overflow: 'hidden', whiteSpace: 'nowrap', marginBottom: '40px' }}>
+                  ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦ ♦
+                </div>
+
+                {/* Bestselling Section */}
+                <div className="section-header" style={{ textAlign: 'center', marginBottom: '30px' }}>
+                  <h2 className="section-title" style={{ fontSize: '24px', color: '#333', fontWeight: '500', marginBottom: '10px' }}>
+                    {t.bestSelling}
+                  </h2>
+                  <p style={{ color: '#888', fontSize: '14px' }}>{t.bestSellingSubtitle}</p>
+                </div>
+
+                <div className="products-grid" id="bestselling-grid">
+                  {bestSelling.map(product => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+              </>
+            )}
+          </>
         )}
       </div>
     </section>

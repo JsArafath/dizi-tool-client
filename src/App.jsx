@@ -5,13 +5,14 @@ import { AuthProvider } from './context/AuthContext'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import Products from './components/Products'
-import HowItWorks from './components/HowItWorks'
 import ReviewsSection from './components/ReviewsSection'
 import Footer from './components/Footer'
 import CartDrawer from './components/CartDrawer'
 import Toast from './components/Toast'
 import AuthModal from './components/AuthModal'
 import AdminPanel from './components/AdminPanel'
+import ProductDetails from './components/ProductDetails'
+import { Routes, Route } from 'react-router-dom'
 
 export default function App() {
   const [cartOpen, setCartOpen]   = useState(false)
@@ -50,10 +51,21 @@ export default function App() {
             onAdminOpen={() => setAdminOpen(true)}
           />
           <main>
-            <Hero />
-            <Products extraProducts={newProducts} />
-            <ReviewsSection />
-            <HowItWorks />
+            <Routes>
+              <Route path="/" element={
+                <>
+                  <Hero />
+                  <Products extraProducts={newProducts} isShopPage={false} />
+                  <ReviewsSection />
+                </>
+              } />
+              <Route path="/shop" element={
+                <Products extraProducts={newProducts} isShopPage={true} />
+              } />
+              <Route path="/product/:id" element={
+                <ProductDetails extraProducts={newProducts} />
+              } />
+            </Routes>
           </main>
           <Footer />
           <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />

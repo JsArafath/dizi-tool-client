@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useCart } from '../context/CartContext'
 import { useLang } from '../context/LanguageContext'
+import { Link } from 'react-router-dom'
 
 export default function ProductCard({ product }) {
   const [open, setOpen] = useState(false)
@@ -24,116 +25,67 @@ export default function ProductCard({ product }) {
       {/* Top row */}
       <div className="product-card-top">
         {product.image ? (
-          <img 
-            src={product.image} 
-            alt={name} 
-            style={{ width: '48px', height: '48px', borderRadius: '12px', objectFit: 'cover', flexShrink: 0, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }} 
-          />
+          <div style={{ position: 'relative', width: '100%' }}>
+            {product.tags && product.tags.length > 0 && (
+              <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', gap: '4px', zIndex: 10 }}>
+                {product.tags.map((tag, i) => (
+                  <span key={i} style={{ background: '#f0506e', color: 'white', fontSize: '11px', fontWeight: 'bold', padding: '2px 6px', textTransform: 'uppercase' }}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+            <Link to={`/product/${product.id}`} style={{ display: 'block' }}>
+              <img 
+                src={product.image} 
+                alt={name} 
+                style={{ width: '100%', aspectRatio: '16/9', objectFit: 'cover' }} 
+              />
+            </Link>
+          </div>
         ) : (
-          <div className="product-icon" style={{ background: product.iconBg || '#f0f4f8' }}>
+          <div className="product-icon">
             {product.icon || '📦'}
           </div>
         )}
-        <div className="product-card-info">
-          <h3 className="product-name">{name}</h3>
-          <div className="product-badges">
-            <span className="badge badge-warranty">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-              {t.warranty}
-            </span>
-            <span className="badge badge-refund">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.27"/>
-              </svg>
-              {t.refundPolicy}
-            </span>
-            <span className="badge badge-speed">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-              </svg>
-              60 min
-            </span>
+        <div className="product-card-info" style={{ textAlign: 'center', padding: '15px' }}>
+          <Link to={`/product/${product.id}`} style={{ textDecoration: 'none' }}>
+            <h3 className="product-name" title={name} style={{ fontSize: '14px', fontWeight: '500', color: '#333', marginBottom: '8px', minHeight: '40px' }}>{name}</h3>
+          </Link>
+          {product.category && (
+            <div style={{ fontSize: '12px', color: '#888', marginBottom: '8px' }}>
+              {product.category}
+            </div>
+          )}
+          {/* Stars */}
+          <div style={{ color: '#ffb400', fontSize: '14px', marginBottom: '8px' }}>
+            ★★★★★
           </div>
         </div>
       </div>
 
-      {/* Description */}
-      <div>
-        <p className="product-desc">{shortDesc}</p>
-        <button
-          className={`view-details-btn${open ? ' open' : ''}`}
-          id={`vd-${product.id}`}
-          onClick={() => setOpen(v => !v)}
-        >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points={open ? "18 15 12 9 6 15" : "6 9 12 15 18 9"}/>
-          </svg>
-          {open ? t.hideDetails : t.viewDetails}
-        </button>
-        {open && (
-          <div className="product-full-desc open" id={`fd-${product.id}`}>
-            {fullDesc}
-          </div>
-        )}
-      </div>
 
-      {/* Stock */}
-      <div className="stock-row">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
-        </svg>
-        <span className="stock-in">{product.stock} {t.inStock}</span>
-        <span className="stock-divider">|</span>
-        <span className="stock-sold">{product.sold.toLocaleString()} {t.sold}</span>
-      </div>
 
       {/* Pricing */}
-      <div className="pricing-row">
-        <div className="price-box">
-          <div className="price-label">BINANCE</div>
-          <div className="price-value">${Number(currentUsdt).toFixed(2)}</div>
-          <div className="price-currency">USDT</div>
-        </div>
-        <div className="price-box">
-          <div className="price-label">BKASH / NAGAD</div>
-          <div className="price-value">৳{currentBdt}</div>
-          <div className="price-currency">BDT</div>
+      <div className="pricing-row" style={{ justifyContent: 'center', padding: '0 15px', color: '#8cc63f', fontWeight: 'bold', fontSize: '14px', marginBottom: '15px' }}>
+        <div className="price-value">
+          {Number(currentBdt).toLocaleString()} VND
         </div>
       </div>
 
-      {/* Package Selection */}
-      {hasPackages && (
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '12px', fontWeight: 'bold', color: '#64748b', marginBottom: '8px', textTransform: 'uppercase' }}>Select Duration</label>
-          <select 
-            value={selectedPkgIndex} 
-            onChange={e => setSelectedPkgIndex(Number(e.target.value))}
-            style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '14px', background: '#f8fafc', color: '#0f172a', fontWeight: '600' }}
-          >
-            {product.packages.map((pkg, idx) => (
-              <option key={idx} value={idx}>{pkg.duration}</option>
-            ))}
-          </select>
-        </div>
-      )}
-
-      {/* Add to cart */}
-      <button
-        className="add-to-cart-btn"
-        id={`atc-${product.id}`}
-        onClick={() => {
-          const itemToAdd = hasPackages ? { ...product, selectedPackage: product.packages[selectedPkgIndex] } : product;
-          addToCart(itemToAdd);
-        }}
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-        </svg>
-        {t.addToCart}
-      </button>
+      <div style={{ padding: '0 15px 20px', textAlign: 'center' }}>
+        <button
+          className="add-to-cart-btn"
+          id={`atc-${product.id}`}
+          onClick={() => {
+            const itemToAdd = hasPackages ? { ...product, selectedPackage: product.packages[selectedPkgIndex] } : product;
+            addToCart(itemToAdd);
+          }}
+          style={{ background: '#8cc63f', color: 'white', padding: '8px 24px', fontSize: '13px', fontWeight: 'bold', borderRadius: '0', border: 'none', cursor: 'pointer', display: 'inline-block', width: 'auto' }}
+        >
+          SELECT
+        </button>
+      </div>
     </article>
   )
 }

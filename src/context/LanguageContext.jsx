@@ -6,6 +6,20 @@ export const translations = {
   en: {
     // Header
     trackOrder: 'Track Order',
+    shop: 'SHOP',
+    order: 'ORDER',
+    get2fa: 'GET 2FA CODE',
+    blog: 'BLOG',
+    contact: 'CONTACT',
+    support: 'CALL FOR SUPPORT',
+    selectCategory: 'SELECT CATEGORY',
+    searchProducts: 'Search for products',
+    featuredProducts: 'Featured products',
+    featuredSubtitle: 'These are products that many people are interested in.',
+    allProducts: 'All Products',
+    seeMore: 'SEE MORE',
+    bestSelling: 'Bestselling product',
+    bestSellingSubtitle: 'This is a popular product, you might like it.',
 
     // Hero
     heroBadge: 'PREMIUM DIGITAL STORE',
@@ -69,6 +83,20 @@ export const translations = {
   bn: {
     // Header
     trackOrder: 'অর্ডার ট্র্যাক করুন',
+    shop: 'শপ',
+    order: 'অর্ডার',
+    get2fa: 'টু-এফ-এ কোড',
+    blog: 'ব্লগ',
+    contact: 'যোগাযোগ',
+    support: 'সাপোর্ট কল',
+    selectCategory: 'ক্যাটাগরি নির্বাচন',
+    searchProducts: 'প্রোডাক্ট খুঁজুন',
+    featuredProducts: 'জনপ্রিয় প্রোডাক্টসমূহ',
+    featuredSubtitle: 'এই প্রোডাক্টগুলোতে অনেকেই আগ্রহী।',
+    allProducts: 'সকল প্রোডাক্ট',
+    seeMore: 'আরও দেখুন',
+    bestSelling: 'বেস্টসেলিং প্রোডাক্ট',
+    bestSellingSubtitle: 'এটি একটি জনপ্রিয় প্রোডাক্ট, আপনার পছন্দ হতে পারে।',
 
     // Hero
     heroBadge: 'প্রিমিয়াম ডিজিটাল স্টোর',
