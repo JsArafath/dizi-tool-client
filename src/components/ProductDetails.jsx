@@ -91,16 +91,19 @@ export default function ProductDetails({ extraProducts = [] }) {
             </table>
           </div>
 
-          {/* Options (Mocked based on screenshot) */}
+          {/* Options (Dynamic based on product.options) */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginBottom: '30px', fontSize: '13px' }}>
+            
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <div style={{ width: '120px', fontWeight: 'bold', color: '#333' }}>Guarantee :</div>
               <div style={{ display: 'flex', gap: '15px', color: '#666' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <input type="radio" name="guarantee" disabled /> <span style={{ opacity: 0.5 }}>It comes with a warranty.</span>
+                  <input type="radio" name="guarantee" readOnly checked={product.options?.guarantee === 'It comes with a warranty.'} disabled={product.options?.guarantee !== 'It comes with a warranty.'} /> 
+                  <span style={{ color: product.options?.guarantee === 'It comes with a warranty.' ? '#333' : 'inherit', fontWeight: product.options?.guarantee === 'It comes with a warranty.' ? '500' : 'normal', opacity: product.options?.guarantee === 'It comes with a warranty.' ? 1 : 0.5 }}>It comes with a warranty.</span>
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <input type="radio" name="guarantee" defaultChecked /> <span style={{ color: '#333', fontWeight: '500' }}>No warranty</span>
+                  <input type="radio" name="guarantee" readOnly checked={product.options?.guarantee === 'No warranty' || !product.options?.guarantee} disabled={product.options?.guarantee !== 'No warranty' && product.options?.guarantee} /> 
+                  <span style={{ color: (product.options?.guarantee === 'No warranty' || !product.options?.guarantee) ? '#333' : 'inherit', fontWeight: (product.options?.guarantee === 'No warranty' || !product.options?.guarantee) ? '500' : 'normal', opacity: (product.options?.guarantee === 'No warranty' || !product.options?.guarantee) ? 1 : 0.5 }}>No warranty</span>
                 </label>
               </div>
             </div>
@@ -109,10 +112,12 @@ export default function ProductDetails({ extraProducts = [] }) {
               <div style={{ width: '120px', fontWeight: 'bold', color: '#333' }}>Share :</div>
               <div style={{ display: 'flex', gap: '15px', color: '#666' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <input type="radio" name="share" defaultChecked /> <span style={{ color: '#333', fontWeight: '500' }}>Pro trial</span>
+                  <input type="radio" name="share" readOnly checked={product.options?.share === 'Pro trial' || !product.options?.share} disabled={product.options?.share !== 'Pro trial' && product.options?.share} /> 
+                  <span style={{ color: (product.options?.share === 'Pro trial' || !product.options?.share) ? '#333' : 'inherit', fontWeight: (product.options?.share === 'Pro trial' || !product.options?.share) ? '500' : 'normal', opacity: (product.options?.share === 'Pro trial' || !product.options?.share) ? 1 : 0.5 }}>Pro trial</span>
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <input type="radio" name="share" disabled /> <span style={{ opacity: 0.5 }}>Blocks</span>
+                  <input type="radio" name="share" readOnly checked={product.options?.share === 'Blocks'} disabled={product.options?.share !== 'Blocks'} /> 
+                  <span style={{ color: product.options?.share === 'Blocks' ? '#333' : 'inherit', fontWeight: product.options?.share === 'Blocks' ? '500' : 'normal', opacity: product.options?.share === 'Blocks' ? 1 : 0.5 }}>Blocks</span>
                 </label>
               </div>
             </div>
@@ -121,13 +126,16 @@ export default function ProductDetails({ extraProducts = [] }) {
               <div style={{ width: '120px', fontWeight: 'bold', color: '#333' }}>Duration :</div>
               <div style={{ display: 'flex', gap: '15px', color: '#666' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <input type="radio" name="duration" disabled /> <span style={{ opacity: 0.5 }}>10-15 days</span>
+                  <input type="radio" name="duration" readOnly checked={product.options?.duration === '10-15 days'} disabled={product.options?.duration !== '10-15 days'} /> 
+                  <span style={{ color: product.options?.duration === '10-15 days' ? '#333' : 'inherit', fontWeight: product.options?.duration === '10-15 days' ? '500' : 'normal', opacity: product.options?.duration === '10-15 days' ? 1 : 0.5 }}>10-15 days</span>
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <input type="radio" name="duration" defaultChecked /> <span style={{ color: '#333', fontWeight: '500' }}>Random</span>
+                  <input type="radio" name="duration" readOnly checked={product.options?.duration === 'Random' || !product.options?.duration} disabled={product.options?.duration !== 'Random' && product.options?.duration} /> 
+                  <span style={{ color: (product.options?.duration === 'Random' || !product.options?.duration) ? '#333' : 'inherit', fontWeight: (product.options?.duration === 'Random' || !product.options?.duration) ? '500' : 'normal', opacity: (product.options?.duration === 'Random' || !product.options?.duration) ? 1 : 0.5 }}>Random</span>
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <input type="radio" name="duration" disabled /> <span style={{ opacity: 0.5 }}>30 days</span>
+                  <input type="radio" name="duration" readOnly checked={product.options?.duration === '30 days'} disabled={product.options?.duration !== '30 days'} /> 
+                  <span style={{ color: product.options?.duration === '30 days' ? '#333' : 'inherit', fontWeight: product.options?.duration === '30 days' ? '500' : 'normal', opacity: product.options?.duration === '30 days' ? 1 : 0.5 }}>30 days</span>
                 </label>
               </div>
             </div>
@@ -136,13 +144,16 @@ export default function ProductDetails({ extraProducts = [] }) {
               <div style={{ width: '120px', fontWeight: 'bold', color: '#333' }}>Account type :</div>
               <div style={{ display: 'flex', gap: '15px', color: '#666' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <input type="radio" name="acctype" disabled /> <span style={{ opacity: 0.5 }}>Owner</span>
+                  <input type="radio" name="acctype" readOnly checked={product.options?.accountType === 'Owner'} disabled={product.options?.accountType !== 'Owner'} /> 
+                  <span style={{ color: product.options?.accountType === 'Owner' ? '#333' : 'inherit', fontWeight: product.options?.accountType === 'Owner' ? '500' : 'normal', opacity: product.options?.accountType === 'Owner' ? 1 : 0.5 }}>Owner</span>
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <input type="radio" name="acctype" defaultChecked /> <span style={{ color: '#333', fontWeight: '500' }}>Session</span>
+                  <input type="radio" name="acctype" readOnly checked={product.options?.accountType === 'Session' || !product.options?.accountType} disabled={product.options?.accountType !== 'Session' && product.options?.accountType} /> 
+                  <span style={{ color: (product.options?.accountType === 'Session' || !product.options?.accountType) ? '#333' : 'inherit', fontWeight: (product.options?.accountType === 'Session' || !product.options?.accountType) ? '500' : 'normal', opacity: (product.options?.accountType === 'Session' || !product.options?.accountType) ? 1 : 0.5 }}>Session</span>
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <input type="radio" name="acctype" disabled /> <span style={{ opacity: 0.5 }}>Shop level</span>
+                  <input type="radio" name="acctype" readOnly checked={product.options?.accountType === 'Shop level'} disabled={product.options?.accountType !== 'Shop level'} /> 
+                  <span style={{ color: product.options?.accountType === 'Shop level' ? '#333' : 'inherit', fontWeight: product.options?.accountType === 'Shop level' ? '500' : 'normal', opacity: product.options?.accountType === 'Shop level' ? 1 : 0.5 }}>Shop level</span>
                 </label>
               </div>
             </div>
