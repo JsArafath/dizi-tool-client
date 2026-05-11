@@ -3,7 +3,7 @@ import { useLang } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
 
 import { Link, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Header({ onCartOpen, onLoginOpen, onAdminOpen }) {
   const { cart } = useCart()
@@ -14,6 +14,19 @@ export default function Header({ onCartOpen, onLoginOpen, onAdminOpen }) {
   
   const [searchQuery, setSearchQuery] = useState('')
   const [category, setCategory] = useState('')
+  const [availableCategories, setAvailableCategories] = useState([])
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/products`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          const cats = new Set(data.products.map(p => p.category).filter(Boolean))
+          setAvailableCategories([...cats])
+        }
+      })
+      .catch(err => console.error('Error loading categories:', err))
+  }, [])
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -51,8 +64,9 @@ export default function Header({ onCartOpen, onLoginOpen, onAdminOpen }) {
               style={{ border: 'none', outline: 'none', background: 'transparent', color: '#888', fontSize: '13px' }}
             >
               <option value="">{t.selectCategory}</option>
-              <option value="AI Tools">AI Tools</option>
-              <option value="Premium Software">Premium Software</option>
+              {availableCategories.map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
             </select>
           </div>
           <button type="submit" style={{ padding: '10px 20px', background: '#8cc63f', border: 'none', color: 'white', cursor: 'pointer' }}>
