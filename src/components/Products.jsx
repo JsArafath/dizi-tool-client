@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import ProductCard from './ProductCard'
 import { useLang } from '../context/LanguageContext'
+import { useSearchParams } from 'react-router-dom'
 
 export default function Products({ extraProducts = [], isShopPage = false }) {
   const { t } = useLang()
@@ -11,19 +12,35 @@ export default function Products({ extraProducts = [], isShopPage = false }) {
     fetch(`${import.meta.env.VITE_API_URL}/api/products`)
       .then(r => r.json())
       .then(data => {
-        if (data.success) setProducts(data.products)
+        if (data.success) {
+          const all = [
+            ...data.products,
+            ...extraProducts.filter(ep => !data.products.find(p => p.id === ep.id))
+          ]
+          setProducts(all)
+        }
       })
-      .catch(() => {
-        // Fallback: show nothing if server is down
-      })
+      .catch(err => console.error('Failed to load products:', err))
       .finally(() => setLoading(false))
-  }, [])
+  }, [extraProducts])
 
-  // Merge server products with newly added ones (from AdminPanel)
-  const all = [
-    ...products,
-    ...extraProducts.filter(ep => !products.find(p => p.id === ep.id))
-  ]
+  const [searchParams] = useSearchParams()
+  const q = searchParams.get('q') || ''
+  const cat = searchParams.get('cat') || ''
+
+  let all = [...products]
+  
+  if (q) {
+    all = all.filter(p => 
+      (p.name?.en?.toLowerCase() || '').includes(q.toLowerCase()) || 
+      (p.name?.bn?.toLowerCase() || '').includes(q.toLowerCase()) ||
+      (p.category?.toLowerCase() || '').includes(q.toLowerCase())
+    )
+  }
+
+  if (cat) {
+    all = all.filter(p => p.category === cat)
+  }
 
   const featured = all.slice(0, 10)
   const bestSelling = all.slice(10, 20)
