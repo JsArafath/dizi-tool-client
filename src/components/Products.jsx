@@ -91,8 +91,15 @@ export default function Products({ extraProducts = [], isShopPage = false }) {
         </div>
 
         {loading ? (
-          <div className="products-loading">
-            <div className="spinner"></div>
+          <div className="products-grid">
+            {[...Array(10)].map((_, i) => (
+              <div key={i} className="skeleton-card skeleton">
+                <div className="skeleton-icon skeleton"></div>
+                <div className="skeleton-text skeleton"></div>
+                <div className="skeleton-text short skeleton"></div>
+                <div className="skeleton-button skeleton"></div>
+              </div>
+            ))}
           </div>
         ) : (
           <>
