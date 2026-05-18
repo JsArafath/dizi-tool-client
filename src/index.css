@@ -623,7 +623,7 @@ body {
 
 .checkout-btn {
   width: 100%;
-  background: var(--orange);
+  background: #8cc63f;
   color: white;
   border: none;
   border-radius: 12px;
@@ -639,9 +639,9 @@ body {
   margin-top: 6px;
 }
 .checkout-btn:hover {
-  background: var(--orange-dark);
+  background: #7bb532;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(244,117,37,.35);
+  box-shadow: 0 6px 20px rgba(140, 198, 63, .35);
 }
 
 /* =============================================
