@@ -34,7 +34,7 @@ export default function CheckoutModal({ isOpen, onClose }) {
           return;
         }
         // Manual WhatsApp redirect for now since it's manual payment
-        const message = `*New Order*\n\n*Amount:* ৳${totalBdt}\n*Payment Method:* ${formData.paymentMethod.toUpperCase()}\n*TrxID:* ${formData.trxId}\n*Email:* ${formData.email}\n*Phone:* ${formData.phone}\n\n*Items:*\n${cart.map(item => `- ${item.name.en || item.name} (Qty: ${item.quantity || 1}) ${item.selectedPackage ? '['+item.selectedPackage.duration+']' : ''}`).join('\n')}`;
+        const message = `*New Order*\n\n*Amount:* ৳${totalBdt}\n*Payment Method:* ${formData.paymentMethod.toUpperCase()}\n*TrxID:* ${formData.trxId}\n*Email:* ${formData.email}\n*Phone:* ${formData.phone}\n\n*Items:*\n${cart.map(item => `- ${item.name.en || item.name} (Qty: ${item.quantity || 1}) ${item.selectedPackage ? '['+item.selectedPackage.duration+']' : ''} ${item.accountType ? '['+item.accountType+']' : ''}`).join('\n')}`;
         const encodedMsg = encodeURIComponent(message);
         window.location.href = `https://wa.me/8801879009680?text=${encodedMsg}`;
         return;

@@ -105,6 +105,20 @@ export default function ProductDetails({ extraProducts = [] }) {
               </div>
             )}
 
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{ width: '120px', fontWeight: 'bold', color: '#333' }}>Account type :</div>
+              <div style={{ display: 'flex', gap: '15px', color: '#666', flexWrap: 'wrap' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                  <input type="radio" name="acctype" checked={accountType === 'Shared'} onChange={() => setAccountType('Shared')} /> 
+                  <span style={{ color: accountType === 'Shared' ? '#333' : 'inherit', fontWeight: accountType === 'Shared' ? '500' : 'normal' }}>Shared</span>
+                </label>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                  <input type="radio" name="acctype" checked={accountType === 'Owned'} onChange={() => setAccountType('Owned')} /> 
+                  <span style={{ color: accountType === 'Owned' ? '#333' : 'inherit', fontWeight: accountType === 'Owned' ? '500' : 'normal' }}>Owned</span>
+                </label>
+              </div>
+            </div>
+
           </div>
 
           {/* Action Buttons */}
@@ -114,13 +128,13 @@ export default function ProductDetails({ extraProducts = [] }) {
             </div>
             
             <button 
-              onClick={() => addToCart({...product, quantity: 1, selectedPackage: currentPkg})}
+              onClick={() => addToCart({...product, quantity: 1, selectedPackage: currentPkg, accountType})}
               style={{ background: '#8cc63f', color: 'white', padding: '0 20px', height: '36px', border: 'none', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer' }}
             >
               ADD TO CART
             </button>
             <button 
-              onClick={() => addToCart({...product, quantity: 1, selectedPackage: currentPkg})}
+              onClick={() => addToCart({...product, quantity: 1, selectedPackage: currentPkg, accountType})}
               style={{ background: '#8cc63f', color: 'white', padding: '0 20px', height: '36px', border: 'none', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer' }}
             >
               BUY NOW
