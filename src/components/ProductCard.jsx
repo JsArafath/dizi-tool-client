@@ -69,7 +69,7 @@ export default function ProductCard({ product }) {
       {/* Pricing */}
       <div className="pricing-row" style={{ justifyContent: 'center', padding: '0 15px', color: '#8cc63f', fontWeight: 'bold', fontSize: '14px', marginBottom: '15px' }}>
         <div className="price-value">
-          {Number(currentBdt).toLocaleString()} VND
+          ৳ {Number(currentBdt).toLocaleString()}
         </div>
       </div>
 

@@ -69,7 +69,7 @@ export default function ProductDetails({ extraProducts = [] }) {
         <div style={{ flex: '1 1 500px' }}>
           <h1 style={{ fontSize: '28px', color: '#333', marginBottom: '15px', fontWeight: '500' }}>{name}</h1>
           <div style={{ fontSize: '24px', color: '#8cc63f', fontWeight: 'bold', marginBottom: '20px' }}>
-            {Number(product.bdt).toLocaleString()} VND {product.packages && product.packages.length > 1 ? `- ${Number(product.packages[product.packages.length-1].bdt).toLocaleString()} VND` : ''}
+            ৳ {Number(product.bdt).toLocaleString()} {product.packages && product.packages.length > 1 ? `- ৳ ${Number(product.packages[product.packages.length-1].bdt).toLocaleString()}` : ''}
           </div>
 
           {/* Discount Table (Mocked) */}
@@ -84,8 +84,8 @@ export default function ProductDetails({ extraProducts = [] }) {
                 </tr>
                 <tr>
                   <td style={{ padding: '4px 0' }}>Discount</td>
-                  <td style={{ padding: '4px 0', color: '#8cc63f' }}>5,001 VND</td>
-                  <td style={{ padding: '4px 0', color: '#8cc63f' }}>9,001 VND</td>
+                  <td style={{ padding: '4px 0', color: '#8cc63f' }}>৳ 50</td>
+                  <td style={{ padding: '4px 0', color: '#8cc63f' }}>৳ 100</td>
                 </tr>
               </tbody>
             </table>
