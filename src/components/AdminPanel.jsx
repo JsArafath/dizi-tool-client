@@ -20,16 +20,15 @@ const EMPTY = {
   image: '',
   stock: '',
   packages: {
+    '10 days': { usdt: '', bdt: '' },
+    '15 days': { usdt: '', bdt: '' },
     '1 Month': { usdt: '', bdt: '' },
     '3 Months': { usdt: '', bdt: '' },
     '6 Months': { usdt: '', bdt: '' },
     '1 Year': { usdt: '', bdt: '' },
   },
   options: {
-    guarantee: 'No warranty',
-    share: 'Pro trial',
-    duration: 'Random',
-    accountType: 'Session'
+    guarantee: 'No warranty'
   }
 }
 
@@ -371,7 +370,7 @@ export default function AdminPanel({ onClose, onProductAdded }) {
             {/* Pricing */}
             <div className="admin-section-label">{l.packagesLabel}</div>
             <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '12px', marginBottom: '24px' }}>
-              {['1 Month', '3 Months', '6 Months', '1 Year'].map(duration => (
+              {['10 days', '15 days', '1 Month', '3 Months', '6 Months', '1 Year'].map(duration => (
                 <div key={duration} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', alignItems: 'center', marginBottom: '12px' }}>
                   <div style={{ fontWeight: 'bold', color: '#475569' }}>{duration}</div>
                   <input 
@@ -402,29 +401,7 @@ export default function AdminPanel({ onClose, onProductAdded }) {
                 <select value={form.options?.guarantee || 'No warranty'} onChange={e => setOption('guarantee', e.target.value)} style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}>
                   <option value="No warranty">No warranty</option>
                   <option value="It comes with a warranty.">It comes with a warranty.</option>
-                </select>
-              </div>
-              <div className="admin-field">
-                <label>Share</label>
-                <select value={form.options?.share || 'Pro trial'} onChange={e => setOption('share', e.target.value)} style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}>
-                  <option value="Pro trial">Pro trial</option>
-                  <option value="Blocks">Blocks</option>
-                </select>
-              </div>
-              <div className="admin-field">
-                <label>Duration</label>
-                <select value={form.options?.duration || 'Random'} onChange={e => setOption('duration', e.target.value)} style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}>
-                  <option value="Random">Random</option>
-                  <option value="10-15 days">10-15 days</option>
-                  <option value="30 days">30 days</option>
-                </select>
-              </div>
-              <div className="admin-field">
-                <label>Account Type</label>
-                <select value={form.options?.accountType || 'Session'} onChange={e => setOption('accountType', e.target.value)} style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}>
-                  <option value="Session">Session</option>
-                  <option value="Owner">Owner</option>
-                  <option value="Shop level">Shop level</option>
+                  <option value="25 day replacement">25 day replacement</option>
                 </select>
               </div>
             </div>

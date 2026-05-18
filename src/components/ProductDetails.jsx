@@ -77,45 +77,19 @@ export default function ProductDetails({ extraProducts = [] }) {
             ৳ {Number(displayBdt).toLocaleString()}
           </div>
 
-          {/* Discount Table (Mocked) */}
-          <div style={{ marginBottom: '20px', borderTop: '1px solid #eee', borderBottom: '1px solid #eee', padding: '10px 0' }}>
-            <div style={{ fontSize: '13px', color: '#666', marginBottom: '8px' }}>Quantity discounts</div>
-            <table style={{ width: '100%', fontSize: '13px', color: '#888', textAlign: 'left' }}>
-              <tbody>
-                <tr>
-                  <th style={{ padding: '4px 0', fontWeight: 'normal' }}>Quantity</th>
-                  <th style={{ padding: '4px 0', fontWeight: 'normal' }}>3 - 4</th>
-                  <th style={{ padding: '4px 0', fontWeight: 'normal' }}>5+</th>
-                </tr>
-                <tr>
-                  <td style={{ padding: '4px 0' }}>Discount</td>
-                  <td style={{ padding: '4px 0', color: '#8cc63f' }}>৳ 50</td>
-                  <td style={{ padding: '4px 0', color: '#8cc63f' }}>৳ 100</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+
 
           {/* Options (Dynamic based on product.options) */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginBottom: '30px', fontSize: '13px' }}>
             
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <div style={{ width: '120px', fontWeight: 'bold', color: '#333' }}>Guarantee :</div>
-              <div style={{ display: 'flex', gap: '15px', color: '#666', flexWrap: 'wrap' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <input type="radio" name="guarantee" readOnly checked={product.options?.guarantee === 'It comes with a warranty.'} disabled={product.options?.guarantee !== 'It comes with a warranty.'} /> 
-                  <span style={{ color: product.options?.guarantee === 'It comes with a warranty.' ? '#333' : 'inherit', fontWeight: product.options?.guarantee === 'It comes with a warranty.' ? '500' : 'normal', opacity: product.options?.guarantee === 'It comes with a warranty.' ? 1 : 0.5 }}>It comes with a warranty.</span>
-                </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <input type="radio" name="guarantee" readOnly checked={product.options?.guarantee === '25 day replacement'} disabled={product.options?.guarantee !== '25 day replacement'} /> 
-                  <span style={{ color: product.options?.guarantee === '25 day replacement' ? '#333' : 'inherit', fontWeight: product.options?.guarantee === '25 day replacement' ? '500' : 'normal', opacity: product.options?.guarantee === '25 day replacement' ? 1 : 0.5 }}>25 day replacement</span>
-                </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <input type="radio" name="guarantee" readOnly checked={product.options?.guarantee === 'No warranty' || (!product.options?.guarantee || (product.options?.guarantee !== 'It comes with a warranty.' && product.options?.guarantee !== '25 day replacement'))} disabled={product.options?.guarantee && product.options?.guarantee !== 'No warranty' && product.options?.guarantee !== 'It comes with a warranty.' && product.options?.guarantee !== '25 day replacement'} /> 
-                  <span style={{ color: (product.options?.guarantee === 'No warranty' || (!product.options?.guarantee || (product.options?.guarantee !== 'It comes with a warranty.' && product.options?.guarantee !== '25 day replacement'))) ? '#333' : 'inherit', fontWeight: (product.options?.guarantee === 'No warranty' || (!product.options?.guarantee || (product.options?.guarantee !== 'It comes with a warranty.' && product.options?.guarantee !== '25 day replacement'))) ? '500' : 'normal', opacity: (product.options?.guarantee === 'No warranty' || (!product.options?.guarantee || (product.options?.guarantee !== 'It comes with a warranty.' && product.options?.guarantee !== '25 day replacement'))) ? 1 : 0.5 }}>No warranty</span>
-                </label>
+            {product.options?.guarantee && (
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ width: '120px', fontWeight: 'bold', color: '#333' }}>Guarantee :</div>
+                <div style={{ color: '#333', fontWeight: '500' }}>
+                  {product.options.guarantee}
+                </div>
               </div>
-            </div>
+            )}
 
             {product.packages && product.packages.length > 0 && (
               <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -131,37 +105,22 @@ export default function ProductDetails({ extraProducts = [] }) {
               </div>
             )}
 
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <div style={{ width: '120px', fontWeight: 'bold', color: '#333' }}>Account type :</div>
-              <div style={{ display: 'flex', gap: '15px', color: '#666', flexWrap: 'wrap' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
-                  <input type="radio" name="acctype" checked={accountType === 'Shared'} onChange={() => setAccountType('Shared')} /> 
-                  <span style={{ color: accountType === 'Shared' ? '#333' : 'inherit', fontWeight: accountType === 'Shared' ? '500' : 'normal' }}>Shared</span>
-                </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
-                  <input type="radio" name="acctype" checked={accountType === 'Owned'} onChange={() => setAccountType('Owned')} /> 
-                  <span style={{ color: accountType === 'Owned' ? '#333' : 'inherit', fontWeight: accountType === 'Owned' ? '500' : 'normal' }}>Owned</span>
-                </label>
-              </div>
-            </div>
           </div>
 
           {/* Action Buttons */}
           <div style={{ display: 'flex', gap: '10px', marginBottom: '15px', alignItems: 'center' }}>
-            <div style={{ display: 'flex', border: '1px solid #ddd', height: '36px' }}>
-              <button style={{ padding: '0 10px', background: '#fff', border: 'none', borderRight: '1px solid #ddd', cursor: 'pointer' }} onClick={() => setQty(Math.max(1, qty-1))}>-</button>
-              <input type="text" value={qty} readOnly style={{ width: '40px', textAlign: 'center', border: 'none', outline: 'none', fontSize: '13px' }} />
-              <button style={{ padding: '0 10px', background: '#fff', border: 'none', borderLeft: '1px solid #ddd', cursor: 'pointer' }} onClick={() => setQty(qty+1)}>+</button>
+            <div style={{ padding: '0 15px', background: '#f5f5f5', borderRadius: '4px', height: '36px', display: 'flex', alignItems: 'center', fontSize: '13px', color: '#555', fontWeight: 'bold' }}>
+              Stock: {product.stock}
             </div>
             
             <button 
-              onClick={() => addToCart({...product, quantity: qty, selectedPackage: currentPkg, accountType})}
+              onClick={() => addToCart({...product, quantity: 1, selectedPackage: currentPkg})}
               style={{ background: '#8cc63f', color: 'white', padding: '0 20px', height: '36px', border: 'none', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer' }}
             >
               ADD TO CART
             </button>
             <button 
-              onClick={() => addToCart({...product, quantity: qty, selectedPackage: currentPkg, accountType})}
+              onClick={() => addToCart({...product, quantity: 1, selectedPackage: currentPkg})}
               style={{ background: '#8cc63f', color: 'white', padding: '0 20px', height: '36px', border: 'none', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer' }}
             >
               BUY NOW
